@@ -49,9 +49,8 @@ public class MainController {
 			return "redirect:/";
 		}
 		User currentUser = userService.getById((Long) session.getAttribute("id"));
-		model.addAttribute("currentUserName",session.getAttribute("firstName"));
-		model.addAttribute("userProjects", projectService.getUserProjects(currentUser));
 		model.addAttribute("nonUserProjects", projectService.getNonUserProjects(currentUser));
+		model.addAttribute("userProjects", projectService.getUserProjects(currentUser));
 		return "dashboard.jsp";
 	}
 	
@@ -61,7 +60,7 @@ public class MainController {
 		if(!(Boolean) session.getAttribute("isLoggedIn")) {
 			return "redirect:/";
 		}
-		// VS. THIS:     ----> which one works better, add to all get routes
+		// VS. THIS:     ----> which one works better? add to all get routes
 		if(session.getAttribute("id") == null) {
 			return "redirect:/";
 		}
@@ -148,7 +147,6 @@ public class MainController {
 		ticket.setCreator(userService.getById((Long) session.getAttribute("id")));
 		ticket.setProject(projectService.getById(projectId));
 		ticketService.create(ticket);
-		// model.addAttribute("project", projectService.getById(projectId));
 		return "redirect:/projects/"+projectId+"/tickets";
 	}
 	
@@ -185,7 +183,7 @@ public class MainController {
 			model.addAttribute("newLogin", new LoginUser());
 			return "loginPage.jsp";
 		}
-		// ~*~* Successfully register new user
+		// ~*~* Successfully registered new user
 		// ~*~* Now set session attributes
 		session.setAttribute("firstName", currentUser.getFirstName());
 		session.setAttribute("id", currentUser.getId());
@@ -211,6 +209,7 @@ public class MainController {
 	// LOGOUT
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
+		// Alternatively, could set session Attributes to null instead of 'invalidate'
 		session.invalidate();
 		return "redirect:/";
 	}

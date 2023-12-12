@@ -3,10 +3,10 @@ package com.tonyb650.projectmanager.models;
 import jakarta.validation.constraints.NotEmpty;
 
 public class LoginUser {
-	@NotEmpty(message="Email is required")
+	@NotEmpty(message="Email is required") // This is probably redundant and unnecessary
 	private String email;
 	
-	@NotEmpty(message="Email is required")
+	@NotEmpty(message="Password is required") // This is probably redundant and unnecessary
 	private String password;
 	
 	public LoginUser() {

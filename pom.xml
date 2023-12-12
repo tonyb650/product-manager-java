@@ -91,8 +91,7 @@
 	        <groupId>org.webjars</groupId>
 	        <artifactId>bootstrap</artifactId>
 	        <version>5.2.3</version>
-    </dependency>
-    
+    	</dependency>
 	</dependencies>
 
 	<build>

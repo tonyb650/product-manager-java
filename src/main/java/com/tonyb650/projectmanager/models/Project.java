@@ -38,13 +38,14 @@ public class Project {
 	@Size(min=3,message="Description must be at least 3 characters long.")
 	private String description;
 	
-
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Future(message="Due date must be a valid date in the future.")
 	private Date dueDate;
+	
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createdAt;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date updatedAt;
 	

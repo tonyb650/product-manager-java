@@ -13,9 +13,9 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row align-items-center">
-			<div class="col">
-					<h1>Welcome, <c:out value="${ firstName }"/>!</h1>
+		<div class="row align-items-center" style="color: white; background-color: #1b2e4d">
+			<div class="col" >
+					<h1>Welcome, <c:out value="${ firstName }"/>!!</h1>
 			</div>
 			<div class="col">
 				<a href="/logout">Logout</a>

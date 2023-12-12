@@ -31,19 +31,26 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Size(min=3,message="Names must be at least 3 characters")
 	private String firstName;
+	
 	@Size(min=3,message="Names must be at least 3 characters")
 	private String lastName;
+	
 	@Email(message="Valid email address is required")
 	private String email;
+	
 	@Size(min=8, message="Password must be at least 8 charactesr")
 	private String password;
+	
 	@Transient
 	private String confirmPassword;
+	
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createdAt;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date updatedAt;
 	
@@ -158,6 +165,14 @@ public class User {
 
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
+	}
+
+	public List<Project> getLeadingProjects() {
+		return leadingProjects;
+	}
+
+	public void setLeadingProjects(List<Project> leadingProjects) {
+		this.leadingProjects = leadingProjects;
 	}
 
 

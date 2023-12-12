@@ -27,6 +27,9 @@ public class ProjectService {
 	@Autowired
 	TicketRepository ticketRepository;
 	
+	@Autowired
+	UserService userService;
+	
 	// FIND METHODS
 	public List<Project> getAll(){
 		return projectRepository.findAll();
@@ -46,7 +49,7 @@ public class ProjectService {
 	
 	// CRUD METHODS
 	public Project create(Project project, BindingResult result, HttpSession session) {
-		// assign 'teamLead' to session user
+		// ~*~* Retrieve user for 'teamLeader' from session user
 		Optional<User> possibleUser = userRepository.findById((Long) session.getAttribute("id"));
 		if(!possibleUser.isPresent()) { // should never get here
 			result.rejectValue("title", "Matches", "Can't assign Team Leader");
@@ -54,7 +57,7 @@ public class ProjectService {
 		if(result.hasErrors()) {
 			return null;
 		}
-		// ~*~* Set teamLead to currentUser
+		// ~*~* Set teamLeader to currentUser
 		User teamLeader = possibleUser.get();
 		project.setTeamLeader(teamLeader);
 		// ~*~* Save project with teamLeader added
@@ -66,17 +69,23 @@ public class ProjectService {
 	}
 	
 	public Project update(Project project) {
-		System.out.println(project.getTitle());
 		Project thisProject = projectRepository.save(project);
-		System.out.println(thisProject.getTitle());
 		return thisProject;
 	}
 	
 	public void destroy(Project project) {
-		// need to delete related tickets also
+		// THERE ARE 3 RELATIONSHIPS TO THINK ABOUT WHEN DELETING A PROJECT
+		// Perhaps we should remove 'leadingProjects' from user -> BUT, don't need to do anything because this relationship is part of the project that will be deleted from the DB
+		// Next, remove this 'project' from any users who are on the team -> This should remove the relationship in the joining table
+		for(User user:project.getUsers()) {
+			user.getProjects().remove(project);
+			userService.update(user);
+		}
+		// Delete any tickets pertaining to this project
 		for(Ticket ticket:project.getTickets()) {
 			ticketRepository.delete(ticket);
 		}
+		// Finally, delete the actual project
 		projectRepository.delete(project);
 	}
 	
